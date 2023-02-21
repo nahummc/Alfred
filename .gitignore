@@ -1,0 +1,12 @@
+
+
+# output files
+*log*
+keys.txt
+
+# env files
+.env
+
+alve
+templates
+_*
