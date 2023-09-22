@@ -123,6 +123,7 @@ async def on_message(message):
 
             original_context[f'user-msg-{original_context["reply_count"]}'] = message.content
 
+
             # Create a simplified string from the original context to pass as the prompt
 
             simple_context = ""
