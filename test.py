@@ -1,4 +1,5 @@
 from alfred import AlfredChat
+from datetime import datetime
 
 
 # this will run a simple 'conversation' with
@@ -26,5 +27,10 @@ def talking():
         f.write("\n\n")
         f.close()
 
+        
+
 
 talking()
+
+
+

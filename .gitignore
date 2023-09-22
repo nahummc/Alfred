@@ -1,12 +1,18 @@
 
+# in progress
+api/youtube.py
+log.py
 
 # output files
 *log*
 keys.txt
+discard.txt
+sys*
 
 # env files
 .env
-
 alve
-templates
 _*
+
+# training
+*.jsonl
