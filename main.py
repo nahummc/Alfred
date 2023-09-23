@@ -5,6 +5,7 @@ import os
 import discord
 import dotenv
 
+from alfred import AlfredChat
 from api.coin import CoinInfo
 from log import setup_logger  # Assuming this is the file where your logging setup resides
 
@@ -26,12 +27,6 @@ def clear_all_instances():
     alfred_instances.clear()
 
 
-# Existing AlfredChat Class
-class AlfredChat:
-    def __init__(self, engine: str = "text-davinci-003", tokens: int = 300):
-        self.engine = engine
-        self.tokens = tokens
-        # ... (rest of your code)
 
 
 # Existing Discord Logic
@@ -59,20 +54,16 @@ except FileNotFoundError:
     logger.info("No existing users found, creating new users dictionary.")
     users = {}
 
-
 async def save_users():
     with open('./data/users.json', 'w') as f:
         json.dump(users, f)
 
-
 # Conversations
 ongoing_conversations = {}
-
 
 @client.event
 async def on_message(message):
     global users
-
     for i in range(0, 1):
         logger.info(f"Received message from {message.author.name}: {message.content}")
 
@@ -93,8 +84,7 @@ async def on_message(message):
 
     # Alfred Chat
     if message.content.startswith('!'):
-        i = 0
-        while len(i) > 0:
+        for i in range(0, 1):
             # reset on fresh prompt
             ongoing_conversations.clear()
             prompt = message.content[1:]
@@ -148,14 +138,26 @@ async def on_message(message):
     elif message.content.startswith('&'):
         if message.content[:5] == '&coin':
             await message.channel.send('coin price requested')
-            symbol = message.content[4:]
-            CoinInfo(symbol)
-        elif message.content == '&':
-            logger.info("Received standalone '&', no action taken.")
-            await message.channel.send("Received standalone '&', no action taken.")
-        else:
-            logger.info("Unknown command starting with '&' received.")
-            await message.channel.send("Unknown command starting with '&' received.")
+            symbol = message.content[6:].strip()  # Strip removes leading and trailing whitespace
+            logger.info(f"Coin price requested for {symbol if symbol else 'bitcoin'}")
+            coin = CoinInfo(symbol if symbol else 'bitcoin')  # Default to 'bitcoin' if no symbol provided
+            await message.channel.send(coin.get_price())
+            # await message.channel.send(coin.get_change())
+
+    elif message.content[:5] == '&help':
+        #     tell user about your various fucntions
+        #  also log which user sent the message, and at what time in what channel
+        await message.channel.send('help requested')
+        logger.info(f"Help requested by {message.author.name}")
+
+
+
+    elif message.content == '&':
+        logger.info("Received standalone '&', no action taken.")
+        await message.channel.send("Received standalone '&', no action taken.")
+    else:
+        logger.info("Unknown command starting with '&' received.")
+        # await message.channel.send("Unknown command starting with '&' received.")
 
         # elif message.content[:4] == '&run':
         #     logger.info('code run feature requested')

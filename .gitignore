@@ -1,17 +1,26 @@
 
 # in progress
 api/youtube.py
-log.py
+scrap/*
+
+#scratch pads
+scrap/trash.py
+scrap/test.py
+scrap/*
+
 
 # output files
 *log*
-keys.txt
-discard.txt
+*.txt
 sys*
+data/*
+.idea/workspace.xml
+
 
 # env files
-.env
+#.env
 alve
+.idea/*
 _*
 
 # training

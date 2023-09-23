@@ -1,10 +1,10 @@
 import os
+
 import dotenv
 import openai
-import requests
 
-import log
-logger = log.setup_logger()
+# import log
+# logger = log.setup_logger()
 
 dotenv.load_dotenv()
 # access open api
