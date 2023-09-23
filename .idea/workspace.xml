@@ -7,8 +7,6 @@
     <list default="true" id="8cc14ad2-f0f9-4fc5-8964-00ccd7ca6b73" name="Changes" comment="I added the feature where Alfred will use context of the conversation if you reply directly to his message.">
       <change beforePath="$PROJECT_DIR$/.env" beforeDir="false" afterPath="$PROJECT_DIR$/.env" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/alfred.py" beforeDir="false" afterPath="$PROJECT_DIR$/alfred.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/users.json" beforeDir="false" afterPath="$PROJECT_DIR$/data/users.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -117,7 +115,7 @@
       <workItem from="1695388010156" duration="653000" />
       <workItem from="1695400745703" duration="4756000" />
       <workItem from="1695424818230" duration="638000" />
-      <workItem from="1695427077255" duration="3219000" />
+      <workItem from="1695427077255" duration="3349000" />
     </task>
     <task id="LOCAL-00001" summary="I added the feature where Alfred will use context of the conversation if you reply directly to his message.">
       <created>1695358140378</created>
