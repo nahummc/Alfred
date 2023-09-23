@@ -13,8 +13,9 @@ openai.api_key = os.getenv("OPENAI_API_KEY")
 
 
 class AlfredChat:
-    # change the arguments here to change response behaviour
-    # def __init__(self, prompt: str, engine: str = "gpt-3.5-turbo", tokens: int = 300):
+    # openai.error.InvalidRequestError: This is a chat  model and not supported in the
+    # v1 / completions endpoint. Did you mean to use v1 / chat / completions?
+
     def __init__(self, engine: str = "text-davinci-003", tokens: int = 300):
         self.engine = engine
         # self.prompt = prompt
@@ -22,7 +23,7 @@ class AlfredChat:
 
     def __str__(self):
         completion = openai.Completion.create(
-            engine=self.engine, prompt=self.prompt, max_tokens=100)
+            engine=self.engine, prompt=self.prompt, max_tokens=1000)
         return f"{completion.choices[0].text}"
 
     def return_completion(self, prompt: str, custom_prompt: str = None, engine: str = None, tokens: int = None):
