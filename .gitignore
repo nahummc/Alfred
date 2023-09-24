@@ -14,11 +14,13 @@ scrap/*
 *.txt
 sys*
 data/*
+*.xml
+
 .idea/workspace.xml
 
 
 # env files
-#.env
+*.env
 alve
 .idea/*
 _*

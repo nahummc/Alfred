@@ -11,6 +11,7 @@ from log import setup_logger  # Assuming this is the file where your logging set
 
 # Initialize Global Variable
 alfred_instances = []
+api_key = os.environ.get("OPENAI_API_KEY")
 
 
 # Function to Create New Instance
@@ -93,9 +94,9 @@ async def on_message(message):
             await save_users()
 
             # Create AlfredChat object
-            alfred = AlfredChat()
+            alfred = AlfredChat(api_key)
 
-            res = alfred.return_completion(prompt=prompt)
+            res = alfred.return_completion(prompt)
             reply = await message.reply(res)
             ongoing_conversations[reply.id] = {'user-msg-1': prompt, 'alfred-msg-1': res, 'reply_count': 1}
             logger.info(f"Sent reply: {res}")
@@ -125,7 +126,7 @@ async def on_message(message):
 
             # Get Alfred's new reply based on the new context
 
-            new_res = AlfredChat().return_completion(prompt=simple_context)
+            new_res = AlfredChat(api_key).return_completion(prompt=simple_context)
 
             reply = await message.reply(new_res)
 
