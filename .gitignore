@@ -20,7 +20,7 @@ data/*
 
 
 # env files
-*.env
+.env
 alve
 .idea/*
 _*
