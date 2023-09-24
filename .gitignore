@@ -1,29 +1,33 @@
-
 # in progress
 api/youtube.py
 scrap/*
 
-#scratch pads
+# scratch pads
 scrap/trash.py
 scrap/test.py
 scrap/*
 
-
 # output files
-*log*
+*.log
+!log.py
 *.txt
 sys*
 data/*
 *.xml
 
-.idea/workspace.xml
-
+# IDE files
+.idea/*
 
 # env files
 .env
 alve
-.idea/*
+
+# Misc
 _*
 
 # training
 *.jsonl
+
+# Keys
+*.pem
+*.key
