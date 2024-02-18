@@ -31,3 +31,4 @@ _*
 # Keys
 *.pem
 *.key
+api/test.py
