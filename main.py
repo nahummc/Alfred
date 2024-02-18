@@ -13,25 +13,16 @@ from dbhandler import DBHandler
 from log import setup_logger
 
 # Initialize the database
+# check if it exists first
+if not os.path.exists('alfred_database.db'):
+    import dbsetup
+
+    dbsetup.setup_database()
+
 db_handler = DBHandler('alfred_database.db')
 
 # Initialize Global Variable
-alfred_instances = []
 api_key = os.environ.get("OPENAI_API_KEY")
-
-
-# Function to Create New Instance
-def create_new_instance(engine="text-davinci-003", tokens=300):
-    global alfred_instances
-    new_instance = AlfredChat(engine=engine, tokens=tokens)
-    alfred_instances.append(new_instance)
-    return new_instance
-
-
-# Function to Clear All Instances
-def clear_all_instances():
-    global alfred_instances
-    alfred_instances.clear()
 
 
 # Existing Discord Logic
@@ -46,8 +37,8 @@ client = discord.Client(intents=intents)
 
 @client.event
 async def on_ready():
-    global alfred_instances  # Access the global variable
-    logger.info(f"We have logged in as {client.user}. Number of Alfred instances: {len(alfred_instances)}")
+    # global alfred_instances  # Access the global variable
+    logger.info(f"We have logged in as {client.user}.")
 
 
 # Users code
@@ -142,7 +133,7 @@ async def handle_help_command(message, logger):
     help_commands = {
         'greet': 'Say hello to the bot.',
         'bye': 'Say goodbye to the bot.',
-        'weather': 'Get current weather information.',
+        # 'weather': 'Get current weather information.',
         'help': 'List all available commands.'
     }
 
@@ -166,7 +157,7 @@ async def on_message(message):
 
     await handle_user_profile(message, db_handler, logger)
 
-    if message.content.startswith('!'):
+    if message.content.startswith('?'):
         ongoing_conversations.clear()
         await handle_alfred_chat(message, db_handler, logger, api_key, ongoing_conversations)
         # await track_convo(user_id, user_message, "User")

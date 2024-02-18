@@ -2,7 +2,7 @@ import os
 
 import openai
 
-openai.api_key = os.getenv("OPENAI_API_KEY")
+# openai.api_key = os.getenv("OPENAI_API_KEY")
 
 
 # AlfredChat.py
@@ -22,5 +22,6 @@ class AlfredChat:
         )
 
         return response['choices'][0]['message']['content']
+
 
 

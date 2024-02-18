@@ -43,8 +43,8 @@ class CoinInfo:
 
 
 # Example usage
-coin_info = CoinInfo()  # Defaults to 'BTC'
-print(coin_info.get_price())
-
-coin_info = CoinInfo('ETH')  # Ethereum
-print(coin_info.get_price())
+# coin_info = CoinInfo()  # Defaults to 'BTC'
+# print(coin_info.get_price())
+#
+# coin_info = CoinInfo('ETH')  # Ethereum
+# print(coin_info.get_price())
