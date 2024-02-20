@@ -2,6 +2,11 @@
 api/youtube.py
 scrap/*
 
+build/*
+main.spec
+*.exe
+
+
 # scratch pads
 scrap/trash.py
 scrap/test.py
