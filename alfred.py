@@ -1,27 +1,14 @@
-import os
-
 import openai
 
-# openai.api_key = os.getenv("OPENAI_API_KEY")
-
-
-# AlfredChat.py
 class AlfredChat:
     def __init__(self, api_key):
         self.api_key = api_key
 
-    # @staticmethod
-    def return_completion(self, prompt: str):
+    def return_completion(self, messages):
+        openai.api_key = self.api_key
         response = openai.ChatCompletion.create(
             model="gpt-3.5-turbo",
-            messages=[
-                {
-                    "role": "user", "content": prompt
-                }
-            ]
+            messages=messages
         )
-
-        return response['choices'][0]['message']['content']
-
-
-
+        # Assuming you want the content of the first choice's message
+        return response.choices[0].message['content']

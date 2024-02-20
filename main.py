@@ -24,7 +24,6 @@ db_handler = DBHandler('alfred_database.db')
 # Initialize Global Variable
 api_key = os.environ.get("OPENAI_API_KEY")
 
-
 # Existing Discord Logic
 dotenv.load_dotenv()
 logger = setup_logger()
@@ -60,23 +59,24 @@ async def save_users():
 ongoing_conversations = []
 
 
-async def track_convo(sender, message):
+async def track_convo(sender, content):
     global ongoing_conversations
-    ongoing_conversations.append({"sender": sender, "message": message})
+    # Assuming 'sender' is either 'user' or 'assistant'
+    role = 'user' if sender != "alfred" else 'assistant'
+    ongoing_conversations.append({"role": role, "content": content})
     print("OG:", ongoing_conversations)
 
 
-# This function returns a simplified string context for the conversation of a given userID
 def get_simple_context():
-    conversation = json.dumps(ongoing_conversations)
-    # print("DEBUG: conversation", conversation)
-    simple_context = "Context to conversation:\n"
-
+    # Assuming ongoing_conversations is a list of dicts with 'role' and 'content'
+    simple_context = "Context of conversation:\n"
     for i in ongoing_conversations:
-        simple_context += i["sender"] + ": " + i["message"] + "\n"
-
+        role = i["role"]
+        # Map 'role' to a more human-readable form if desired, e.g., 'user' to actual usernames or 'assistant' to 'Alfred'
+        # This step is optional and can be customized based on your application's needs
+        content = i["content"]
+        simple_context += f"{role}: {content}\n"
     print("DEBUG: simple_context", simple_context)
-
     return simple_context
 
 
@@ -90,36 +90,55 @@ async def handle_user_profile(message, db_handler, logger):
         db_handler.create_user(user_id, message.author.name, current_time, 0)
 
 
-async def handle_alfred_chat(message, users, logger, api_key, ongoing_conversations):
+async def handle_alfred_chat(message, db_handler, logger, api_key, ongoing_conversations):
     user_id = str(message.author.id)
-    # ongoing_conversations[user_id] = {"messages": []}
+    user_message = message.content[1:]  # Strip the command prefix to get the actual message
 
-    prompt = message.content[1:]
+    # Before sending the user message to OpenAI, track it in the conversation history
+    await track_convo(user_id,
+                      user_message)  # Assuming 'user_id' can be mapped to 'user' or 'assistant' role appropriately within `track_convo`
 
-    # Track the user's message
-    # await track_convo(user_id, prompt, "User")
-
+    # Initialize the AlfredChat instance with the API key
     alfred = AlfredChat(api_key)
-    res = alfred.return_completion(prompt)
-    await track_convo("alfred", res)
-    reply = await message.reply(res)
 
-    # Track Alfred's message
-    # await track_convo(user_id, res, "Alfred")
+    # Pass the ongoing conversation to AlfredChat for generating the response
+    # Ensure that 'ongoing_conversations' is in the correct format, as expected by the ChatCompletion API
+    response_text = alfred.return_completion(ongoing_conversations)
 
-    logger.info(f"Sent reply: {res}")
+    # After receiving the response from AlfredChat, track this response in the conversation
+    await track_convo("alfred", response_text)  # This assumes "alfred" is treated as 'assistant' in `track_convo`
+
+    # Reply to the user message with Alfred's response
+    await message.reply(response_text)
+
+    # Log the response sent for debugging or monitoring purposes
+    logger.info(f"Sent reply: {response_text}")
 
 
 async def handle_replies(message, logger, api_key, ongoing_conversations):
-    # Extract the user_id from the message author
-    user_id = str(message.author.id)
-    await track_convo(user_id, message.content)
-    context = get_simple_context()
-    alfred = AlfredChat(api_key)
-    res = alfred.return_completion(prompt=context)
-    await track_convo("alfred", res)
-    reply = await message.reply(res[8:])
+    # Check if this message is a reply
+    if message.reference is not None:
+        # This is a reply to a previous message
+        # Extract message content
+        user_message = message.content
+        # Track the user's reply
+        await track_convo('user', user_message)  # Assuming this function correctly appends to ongoing_conversations
 
+        # Prepare the messages for the chat model
+        alfred = AlfredChat(api_key)
+        # Now call return_completion with the list of messages directly
+        response_text = alfred.return_completion(ongoing_conversations)
+
+        # Track Alfred's response
+        await track_convo('assistant', response_text)
+
+        # Reply to the message
+        await message.reply(response_text)
+
+        logger.info(f"Handled reply: {response_text}")
+    else:
+        # This message is not a reply; handle accordingly
+        pass
 
 async def handle_coin_price(message, logger):
     await message.channel.send('coin price requested')

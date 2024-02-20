@@ -5,6 +5,7 @@ scrap/*
 build/*
 main.spec
 *.exe
+*.spec
 
 
 # scratch pads
