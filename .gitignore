@@ -2,10 +2,17 @@
 api/youtube.py
 scrap/*
 
+# keys
+etc/*
+invite bot to discord server.txt
+*_database.db
+
 build/*
 main.spec
 *.exe
 *.spec
+*.iml
+.idea/*
 
 
 # scratch pads
@@ -16,13 +23,13 @@ scrap/*
 # output files
 *.log
 !log.py
-*.txt
 sys*
 data/*
 *.xml
 
 # IDE files
 .idea/*
+.idea/alfred.iml
 
 # env files
 .env
@@ -38,3 +45,4 @@ _*
 *.pem
 *.key
 api/test.py
+.idea/alfred.iml
